@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import SavedTweets from './SavedTweets.js';
+import Time from 'react-time';
 
 
 class App extends Component {
@@ -61,7 +62,16 @@ class App extends Component {
 
       this.state.tweets.forEach(
           function(tweet) {
-              tweets.push(<tr><td>{tweet.text}<br/><button className="btn btn-xs" onClick={() => this.saveTweet(tweet)}>Save</button></td></tr>);
+              var created_at = new Date(tweet.created_at);
+
+              tweets.push(
+                      <div className="row">
+                      <div className="col-lg-2"><Time value={created_at} format="DD MMM YY HH:mm" /></div>
+                      <div className="col-lg-2"><a href={'https://twitter.com/' + tweet.user.screen_name} target='_blank'>@{tweet.user.screen_name}</a></div>
+                      <div className="col-lg-7">{tweet.text}</div>
+                      <div className="col-lg-1"><button className="btn btn-xs" onClick={() => this.saveTweet(tweet)}>Save</button></div>
+                      </div>
+                      );
           }.bind(this));
 
       return (
@@ -79,8 +89,10 @@ class App extends Component {
                 <tbody>{tweets}</tbody>
                 </table>
               </div>
-              <div className="col-lg-6">
+              <div className="col-lg-6 text-center">
               <h3>Saved Tweets</h3>
+              <br/>
+              <br/>
               <SavedTweets tweets={this.state.savedTweets}/>
               </div>
               </div>
