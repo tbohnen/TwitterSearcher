@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
+import SavedTweets from './SavedTweets.js';
+
 
 class App extends Component {
     constructor(props){
         super(props);
-        this.state = {searchString:'', tweets:[], savedTweets:[]};
+        this.state = {searchString:'', tweets:[], savedTweets:[], baseUrl: "http://localhost:8081"};
 
         this.search = this.search.bind(this);
         this.doSearch = this.doSearch.bind(this);
@@ -15,7 +17,7 @@ class App extends Component {
 
     getSavedTweets(){
         var _this = this;
-        fetch('http://localhost:8081/api/savedtweets')
+        fetch(this.state.baseUrl + '/api/savedtweets')
             .then(function(response){
                 return response.json();
             })
@@ -31,7 +33,7 @@ class App extends Component {
 
     doSearch(){
         var _this = this;
-        fetch('http://localhost:8081/api/searchtwitter?search=%23' + this.state.searchString)
+        fetch(this.state.baseUrl + '/api/searchtwitter?search=%23' + this.state.searchString)
             .then(function(response) {
                 return response.json();
             })
@@ -43,7 +45,7 @@ class App extends Component {
 
     saveTweet(tweet){
         var _this = this;
-        fetch('http://localhost:8081/api/savetweet', {
+        fetch(this.state.baseUrl + '/api/savetweet', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -56,12 +58,6 @@ class App extends Component {
 
   render() {
       var tweets = [];
-      var savedTweets = [];
-
-      this.state.savedTweets.forEach(
-          function(tweet) {
-              savedTweets.push(<tr><td>{tweet.text}</td></tr>);
-          });
 
       this.state.tweets.forEach(
           function(tweet) {
@@ -69,25 +65,23 @@ class App extends Component {
           }.bind(this));
 
       return (
-              <div className="container">
+              <div className="container-fluid">
               <div className="text-center">
                 <div className="">
                   <h2>Twitter Searcher</h2>
                 </div>
               </div>
               <div className="row">
-              <div className="col-lg-offset-1 col-lg-4 text-center">
+              <div className="col-lg-6 text-center">
               <h3 >Search By HashTag</h3>
               <div><span>Search # </span><input type="text" onKeyUp={this.search}></input>&nbsp;<button className="btn btn-primary btn-md" onClick={this.doSearch}>Search</button></div>
                 <table className="table">
                 <tbody>{tweets}</tbody>
                 </table>
               </div>
-              <div className="col-lg-offset-1 col-lg-4">
+              <div className="col-lg-6">
               <h3>Saved Tweets</h3>
-              <table className="table">
-              <tbody>{savedTweets}</tbody>
-              </table>
+              <SavedTweets tweets={this.state.savedTweets}/>
               </div>
               </div>
             </div>

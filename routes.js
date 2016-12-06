@@ -30,7 +30,7 @@ function init(app){
 function auth(searchTerm, cb, res){
 
     var OAuth2 = require('OAuth').OAuth2;
-    var oauth2 = new OAuth2(config.key, config.secret,  'https://api.twitter.com/', null, 'oauth2/token', null);
+    var oauth2 = new OAuth2(config.key, config.secret, 'https://api.twitter.com/', null, 'oauth2/token', null);
 
     oauth2.getOAuthAccessToken('', {
         'grant_type': 'client_credentials'

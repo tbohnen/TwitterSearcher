@@ -13,7 +13,7 @@ describe('TwitterSearch', function() {
     it('should not find tweets', function(done) {
         this.timeout(15000);
 
-        chai.request('http://localhost:8081')
+        chai.request(url)
             .get('/api/searchtwitter?search=%23thisshouldreallynotwork123')
             .end(function(err, res) {
                 expect(res.body.tweets.length).to.equal(0);
@@ -23,7 +23,7 @@ describe('TwitterSearch', function() {
     it('should find tweets', function(done) {
         this.timeout(15000);
 
-        chai.request('http://localhost:8081')
+        chai.request(url)
             .get('/api/searchtwitter?search=%23NoEstimates')
             .end(function(err, res) {
                 expect(res.body.tweets.length).to.equal(15);
