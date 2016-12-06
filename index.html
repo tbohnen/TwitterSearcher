@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Twitter Hashtag search</title>
+        <link rel="stylesheet" href="../shared/css/base.css" />
+        <script src="https://unpkg.com/react@15/dist/react.js"></script>
+        <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.1/fetch.js"></script>
+    </head>
+
+    <body>
+        <h1>Basic Example</h1>
+        <div id="container">
+            <script>
+
+             fetch('/api/searchtwitter?search=%23noestimates')
+             .then(function(response) {
+                     return response.json();
+             })
+             .then(function(json){
+                 var tweets = [];
+                 for (var i=0; i < json.tweets; i++) {
+                     rows.push(json.tweets[i].text);
+                 };
+
+                 var ExampleApplication = React.createClass({
+                     render: function() {
+                         return (
+                             React.DOM.table({className: "MyClassName"},
+                                             React.DOM.thead(null,
+                                                             React.DOM.tr(null,
+                                                                          tweets.map(function(tweet) {
+                                                                              return React.DOM.th({key: tweet}, tweet);
+                                                                          })
+                                                             )
+                                             ), 
+                                             React.DOM.tbody(null,
+                                                             tweets.map(function(row, i) {
+                                                                 return (
+                                                                     React.DOM.tr({key: i},
+                                                                                  row.map(function(col, j) {
+                                                                                      return React.DOM.td({key: j}, col);
+                                                                                  })
+                                                                     )
+                                                                 );
+                                                             })
+                                             )
+                             )
+                         );
+                     }
+                     /* render: function() { */
+                     /* return React.createElement('div', null, `Hello ${json.tweets}`); */
+                     /* } */
+                 });
+
+
+                 // Call React.createFactory instead of directly call ExampleApplication({...}) in React.render
+                 var ExampleApplicationFactory = React.createFactory(ExampleApplication);
+                 ReactDOM.render(
+                     ExampleApplicationFactory(),
+                     document.getElementById('container')
+                 );
+             })
+
+            </script>
+    </body>
+</html>

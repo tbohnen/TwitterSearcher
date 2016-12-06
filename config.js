@@ -1,0 +1,2 @@
+exports.key = '';
+exports.secret = '';
